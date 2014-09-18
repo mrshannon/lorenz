@@ -20,6 +20,8 @@ module Lorenz.SDL
 import Lorenz.Data
 import Control.Monad
 import Graphics.UI.SDL
+import Data.Version(showVersion)
+import Paths_lorenz(version)
 
 
 screenWidth :: Int
@@ -35,12 +37,13 @@ screenBpp = 32
 -- | OpenGL attributes to apply to window.
 glAttributes :: [(GLAttr, GLValue)]
 glAttributes = 
-    [ (glRedSize        ,   8) -- 8 bit red buffer.
-    , (glGreenSize      ,   8) -- 8 bit green buffer.
-    , (glBlueSize       ,   8) -- 8 bit blue buffer.
-    , (glAlphaSize      ,   8) -- 8 bit alpha buffer.
-    , (glDepthSize      ,  24) -- 24 bit depth buffer.
-    , (glDoubleBuffer   ,   1) -- Use double buffers.
+    [ (glRedSize                ,   8) -- 8 bit red buffer.
+    , (glGreenSize              ,   8) -- 8 bit green buffer.
+    , (glBlueSize               ,   8) -- 8 bit blue buffer.
+    , (glAlphaSize              ,   8) -- 8 bit alpha buffer.
+    , (glDepthSize              ,  24) -- 24 bit depth buffer.
+    , (glDoubleBuffer           ,   1) -- Use double buffers.
+    , (glMultiSampleSamples     ,   8)
     ]
 
 
@@ -50,10 +53,9 @@ glApplyAttributes atts = forM_ atts $ uncurry glSetAttribute
 
 
 -- | Initilize SDL and open a window with an OpenGL context.
-initilizeSDL :: App -> IO App
-initilizeSDL app = withInit [InitEverything] $ do
+initilizeSDL :: (App -> IO ()) -> App -> IO ()
+initilizeSDL nextAction app = withInit [InitEverything] $ do
         glApplyAttributes glAttributes
-        _ <- setVideoMode screenWidth screenHeight screenBpp [OpenGL]
-        setCaption "Lorenz (vINSERT VERSION)" []
-        delay 10000
-        return app
+        _ <- setVideoMode screenWidth screenHeight screenBpp [OpenGL, Resizable]
+        setCaption ("Lorenz (v" ++ showVersion version ++ ")") "Lorenz"
+        nextAction app

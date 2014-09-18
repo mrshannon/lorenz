@@ -2,24 +2,25 @@
 
 -------------------------------------------------------------------------------
 -- |
--- Module       : Main
+-- Module       : Lorenz.Events
 -- Copyright    : Copyright (c) 2014 Michael R. Shannon
 -- License      : MIT
 -- Maintainer   : mrshannon.aerospace@gmail.com
 -- Stability    : unstable
 -- Portability  : portable
 --
--- Displays the Lorenz attractor in 3D with OpenGL.
+-- Event handlers.
 -------------------------------------------------------------------------------
 
+module Lorenz.Events
+( handleEvents
+) where
 
-module Main where
-
-import Lorenz.App
+import Lorenz.Data
 
 
--- | Compose application parts and run.
-main :: IO ()
-main = flip initilizeSDL app $ initilizeGL $ mainLoop
-    where
-        app = initilizeApp $ defaultSettings
+-- | Poll SDL for events and handle them.
+handleEvents :: App -> IO App
+handleEvents app = do
+    putStrLn "Handling events..."
+    return app

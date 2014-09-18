@@ -21,27 +21,20 @@ module Lorenz.App
 , mainLoop
 ) where
 
-
 import Lorenz.Data
-import Lorenz.SDL
-
+import Lorenz.SDL(initilizeSDL)
+import Lorenz.OpenGL(initilizeGL)
+import Lorenz.Loop(mainLoop)
 
 
 -- | Default application settings.
-defaultSettings :: Settings
-defaultSettings = Settings
+defaultSettings :: AppSettings
+defaultSettings = AppSettings
 
 
 -- | Take the application Settings and construct an App object.
-initilizeApp :: Settings -> App
-initilizeApp settings = App settings
-
-
--- | Initilize OpenGL
-initilizeGL :: App -> IO App
-initilizeGL app = putStrLn "Initilizing OpenGL..." >> return app
-
-
--- | Run the application.
-mainLoop :: App -> IO ()
-mainLoop _ = putStrLn "Running application..."
+initilizeApp :: AppSettings -> App
+initilizeApp settings =
+    App
+        settings
+        (AppState Running)

@@ -15,7 +15,14 @@
 PROGRAM=lorenz
 
 # Sources
-SOURCES=src/Main.hs src/Lorenz/App.hs src/Lorenz/SDL.hs src/Lorenz/Data.hs
+SOURCES=src/Main.hs \
+        src/Lorenz/App.hs \
+        src/Lorenz/SDL.hs \
+        src/Lorenz/OpenGL.hs \
+        src/Lorenz/Loop.hs \
+        src/Lorenz/Events.hs \
+        src/Lorenz/Logic.hs \
+        src/Lorenz/Data.hs
 
 ################################################################################
 

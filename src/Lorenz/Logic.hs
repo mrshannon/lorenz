@@ -2,24 +2,24 @@
 
 -------------------------------------------------------------------------------
 -- |
--- Module       : Main
+-- Module       : Lorenz.Logic
 -- Copyright    : Copyright (c) 2014 Michael R. Shannon
 -- License      : MIT
 -- Maintainer   : mrshannon.aerospace@gmail.com
 -- Stability    : unstable
 -- Portability  : portable
 --
--- Displays the Lorenz attractor in 3D with OpenGL.
+-- Handles non even driven logi
 -------------------------------------------------------------------------------
 
 
-module Main where
+module Lorenz.Logic
+( update
+) where
 
-import Lorenz.App
+import Lorenz.Data
 
 
--- | Compose application parts and run.
-main :: IO ()
-main = flip initilizeSDL app $ initilizeGL $ mainLoop
-    where
-        app = initilizeApp $ defaultSettings
+-- | Perform logic operation on the App state and return a new App.
+update :: App -> App
+update = id

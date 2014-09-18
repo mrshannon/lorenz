@@ -12,14 +12,27 @@
 -- Data sctructures used by Lorenz
 -------------------------------------------------------------------------------
 
+
 module Lorenz.Data
-( Settings(..)
-, App(..)
+( App(..)
+, AppSettings(..)
+, AppState(..)
+, StateRunning(..)
 ) where
 
 
+data App = App
+    { appSettings   :: AppSettings
+    , appState      :: AppState
+    }
 
-data Settings = Settings
 
-data App = App Settings
+data AppSettings = AppSettings
 
+
+data AppState = AppState
+    { stateRunning :: StateRunning
+    }
+
+
+data StateRunning = Running | Paused | Quit
