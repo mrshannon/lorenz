@@ -15,7 +15,7 @@
 PROGRAM=lorenz
 
 # Sources
-SOURCES=src/Main.hs
+SOURCES=src/Main.hs src/Lorenz/App.hs
 
 ################################################################################
 
@@ -24,6 +24,10 @@ SOURCES=src/Main.hs
 ################################################################################
 static: GHCFLAGS=-O2
 dynamic: GHCFLAGS=-O2 -dynamic
+
+SDL_VERSION="SDL-0.6.5"
+
+export CABAL_SANDBOX_CONFIG=$(PWD)/cabal.sandbox.config
 ################################################################################
 
 
@@ -65,22 +69,27 @@ clean-all: clean clean-sandbox
 ### Internal Rules
 ################################################################################
 
+# The manual build of SDL is necessary as it needs to be patched.
 .cabal-sandbox:
-	cabal update
 	cabal sandbox init
+	cabal unpack $(SDL_VERSION)
+	patch $(SDL_VERSION)/Graphics/UI/SDL/Events.hsc < src/Events.patch
+	cd $(SDL_VERSION) && cabal --require-sandbox install --jobs
+	rm -Rf $(SDL_VERSION)
+	cabal --require-sandbox install --jobs --only-dependencies
 
 .PHONY: clean-sandbox
 clean-sandbox:
 	cabal sandbox delete
 
 dist:
-	cabal --require-sandbox install --jobs --only-dependencies
 	cabal configure --ghc-options="$(GHCFLAGS)"
 
 $(PROGRAM): dist/build/$(PROGRAM)/$(PROGRAM)
 	cp dist/build/$(PROGRAM)/$(PROGRAM) $(PROGRAM)
 
 dist/build/$(PROGRAM)/$(PROGRAM): $(SOURCES) dist
+	cabal --require-sandbox install --jobs --only-dependencies
 	cabal build
 
 ################################################################################

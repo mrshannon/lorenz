@@ -1,0 +1,4 @@
+56c56
+< import Data.Typeable (Typeable(typeOf),TypeRep)
+---
+> import Data.Typeable
