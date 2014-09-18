@@ -15,7 +15,7 @@
 PROGRAM=lorenz
 
 # Sources
-SOURCES=Main.hs
+SOURCES=src/Main.hs
 
 ################################################################################
 
