@@ -15,6 +15,11 @@
 
 module Main where
 
+import Lorenz.App
+
 
 main :: IO ()
-main = initilizeApp >>= initilizeSDL >>= initilizeGL >>= mainLoop
+main = (return . initilizeApp $ defaultSettings)
+    >>= initilizeSDL 
+    >>= initilizeGL 
+    >>= mainLoop
