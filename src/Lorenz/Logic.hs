@@ -20,6 +20,8 @@ module Lorenz.Logic
 import Lorenz.Data
 
 
+
+
 -- | Perform logic operation on the App state and return a new App.
-update :: App -> App
-update = id
+update :: App -> IO App
+update = return . id

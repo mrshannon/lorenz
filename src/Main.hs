@@ -18,8 +18,8 @@ module Main where
 import Lorenz.App
 
 
+
+
 -- | Compose application parts and run.
 main :: IO ()
-main = flip initilizeSDL app $ initilizeGL $ mainLoop
-    where
-        app = initilizeApp $ defaultSettings
+main = flip initilizeSDL initilizeApp $ initilizeGL $ mainLoop

@@ -15,13 +15,16 @@
 
 module Lorenz.OpenGL
 ( initilizeGL
-, redraw
+, draw
+, reshape
 ) where
 
 import Lorenz.Data
 import Graphics.Rendering.OpenGL
-import Graphics.UI.SDL(delay)
+import Graphics.UI.SDL(setVideoMode, SurfaceFlag(..))
 import Graphics.UI.SDL.Video(glSwapBuffers)
+
+
 
 
 -- | Initilize OpenGL
@@ -31,12 +34,13 @@ initilizeGL nextAction app = do
     nextAction app
 
 
+
+
 -- | Redraw the scene.
-redraw :: App -> IO ()
-redraw _ = do
+draw :: App -> IO ()
+draw _ = do
     clear [ColorBuffer, DepthBuffer]
     loadIdentity
-    delay 100
     renderPrimitive Polygon $ do
         color $ Color3 (1.0::GLfloat) (0.0::GLfloat) (0.0::GLfloat)
         vertex $ Vertex2 ( 0.0::GLfloat) ( 0.5::GLfloat)
@@ -46,3 +50,36 @@ redraw _ = do
         vertex $ Vertex2 (-0.5::GLfloat) (-0.5::GLfloat)
     flush
     glSwapBuffers
+
+
+
+
+-- TODO: This function causes flickering during resize.
+-- | Reshape the window.
+reshape :: Int -> Int -> IO ()
+reshape width height = do
+
+        _ <- setVideoMode width height 32 [OpenGL, Resizable]
+        
+        -- Set viewport as entire window.
+        viewport $= (Position 0 0, Size (fromIntegral width) (fromIntegral height))
+
+        -- Apply the projection.
+        matrixMode $= Projection
+        loadIdentity
+        if w2h >= 1
+            -- Wider than taller.
+            then ortho (-w2h) (w2h) (-1.0)   (1.0)   (-1.0) (1.0)
+            -- Taller than wider.
+            else ortho (-1.0) (1.0) (-1/w2h) (1/w2h) (-1.0) (1.0)
+
+        -- Reset the modelview matrix.
+        matrixMode $= Modelview 0
+        loadIdentity
+
+    where
+        -- Width to height ratio.
+        w2h = if height > 0
+                then (fromIntegral width)/(fromIntegral height)
+                else 1
+

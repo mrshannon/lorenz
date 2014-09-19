@@ -18,20 +18,13 @@ module Lorenz.SDL
 ) where
 
 import Lorenz.Data
+import Lorenz.OpenGL(reshape)
 import Control.Monad
 import Graphics.UI.SDL
 import Data.Version(showVersion)
 import Paths_lorenz(version)
 
 
-screenWidth :: Int
-screenWidth = 1280
-
-screenHeight :: Int
-screenHeight = 720
-
-screenBpp :: Int
-screenBpp = 32
 
 
 -- | OpenGL attributes to apply to window.
@@ -47,15 +40,31 @@ glAttributes =
     ]
 
 
+
+
 -- | Apply a list of tuples of OpenGL attributes.
 glApplyAttributes :: [(GLAttr, GLValue)] -> IO ()
 glApplyAttributes atts = forM_ atts $ uncurry glSetAttribute
 
 
+
+
+-- TODO: There is a small bug that will cause the projection to be off until a
+--       resize on tiling window managers.  This is not a problem on floating
+--       window managers.
 -- | Initilize SDL and open a window with an OpenGL context.
 initilizeSDL :: (App -> IO ()) -> App -> IO ()
-initilizeSDL nextAction app = withInit [InitEverything] $ do
+initilizeSDL nextAction app@(App { appWindow = appWin}) = 
+    withInit [InitEverything] $ do
+
+        -- Set OpenGL attributes and create a window.
         glApplyAttributes glAttributes
-        _ <- setVideoMode screenWidth screenHeight screenBpp [OpenGL, Resizable]
+        reshape screenWidth screenHeight
+        -- _ <- setVideoMode screenWidth screenHeight screenBpp [OpenGL, Resizable]
         setCaption ("Lorenz (v" ++ showVersion version ++ ")") "Lorenz"
+
+        -- Run the next action.
         nextAction app
+
+    where
+        AppWindow screenWidth screenHeight = appWin

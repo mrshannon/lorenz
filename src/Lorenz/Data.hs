@@ -15,19 +15,26 @@
 
 module Lorenz.Data
 ( App(..)
-, AppSettings(..)
+, AppWindow(..)
 , AppState(..)
+, AppTime(..)
 , StateRunning(..)
 ) where
 
+import Data.Word
+
 
 data App = App
-    { appSettings   :: AppSettings
+    { appWindow     :: AppWindow
     , appState      :: AppState
+    , appTime       :: AppTime
     }
 
 
-data AppSettings = AppSettings
+data AppWindow = AppWindow
+    { windowWidth       :: !Int
+    , windowHeight      :: !Int
+    }
 
 
 data AppState = AppState
@@ -35,4 +42,10 @@ data AppState = AppState
     }
 
 
-data StateRunning = Running | Paused | Quit
+data StateRunning = Running | Paused | Quited
+
+
+data AppTime = AppTime
+    { timeFrame     :: !Word32
+    , timeUpdate    :: !Word32
+    }

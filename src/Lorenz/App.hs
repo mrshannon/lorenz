@@ -14,8 +14,7 @@
 
 
 module Lorenz.App
-( defaultSettings
-, initilizeApp
+( initilizeApp
 , initilizeSDL
 , initilizeGL
 , mainLoop
@@ -27,14 +26,20 @@ import Lorenz.OpenGL(initilizeGL)
 import Lorenz.Loop(mainLoop)
 
 
--- | Default application settings.
-defaultSettings :: AppSettings
-defaultSettings = AppSettings
 
 
 -- | Take the application Settings and construct an App object.
-initilizeApp :: AppSettings -> App
-initilizeApp settings =
-    App
-        settings
-        (AppState Running)
+initilizeApp :: App
+initilizeApp = App
+    { appWindow = AppWindow
+        { windowWidth = 1024
+        , windowHeight = 720
+        }
+    , appState = AppState
+        { stateRunning  = Running
+        }
+    , appTime = AppTime
+        { timeFrame = 0
+        , timeUpdate = 0
+        }
+    }
