@@ -18,11 +18,12 @@ module Lorenz.Loop
 ) where
 
 import Lorenz.Data
-import Lorenz.Events(handleEvents)
+import Lorenz.Events
 import Lorenz.Logic(update)
 import Lorenz.OpenGL(draw)
 import Graphics.UI.SDL.Time
 import Data.Word(Word32)
+
 
 
 
@@ -37,6 +38,7 @@ maxFPS = 60
 mainLoop :: App -> IO ()
 mainLoop app = 
     handleEvents app                >>=
+    handleMouseMovements            >>=
     update                          >>=
     (\x -> draw x >> return x)      >>=
     --limitFPS                        >>=
