@@ -23,7 +23,8 @@ SOURCES=src/Main.hs \
         src/Lorenz/Events.hs \
         src/Lorenz/Logic.hs \
         src/Lorenz/Data.hs \
-        src/Graphics/Rendering/OpenGL/Help.hs
+        src/Graphics/Rendering/OpenGL/Help.hs \
+        src/Graphics/Rendering/OpenGL/Draw.hs
 
 ################################################################################
 

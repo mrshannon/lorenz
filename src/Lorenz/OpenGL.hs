@@ -23,13 +23,16 @@ import Lorenz.Data
 import Graphics.Rendering.OpenGL
 import Graphics.UI.SDL(setVideoMode, SurfaceFlag(..))
 import Graphics.UI.SDL.Video(glSwapBuffers)
-
+import Graphics.Rendering.OpenGL.Help
+import Graphics.Rendering.OpenGL.Draw
+import qualified Graphics.UI.GLUT.Initialization as GLUT
 
 
 
 -- | Initilize OpenGL
 initilizeGL :: (App -> IO ()) -> App -> IO ()
 initilizeGL nextAction app = do
+    _ <- GLUT.initialize "" [""]
     depthFunc $= Just Lequal
     nextAction app
 
@@ -41,15 +44,12 @@ draw :: App -> IO ()
 draw _ = do
     clear [ColorBuffer, DepthBuffer]
     loadIdentity
-    renderPrimitive Polygon $ do
-        color $ Color3 (1.0::GLfloat) (0.0::GLfloat) (0.0::GLfloat)
-        vertex $ Vertex2 ( 0.0::GLfloat) ( 0.5::GLfloat)
-        color $ Color3 (0.0::GLfloat) (1.0::GLfloat) (0.0::GLfloat)
-        vertex $ Vertex2 ( 0.5::GLfloat) (-0.5::GLfloat)
-        color $ Color3 (0.0::GLfloat) (0.0::GLfloat) (1.0::GLfloat)
-        vertex $ Vertex2 (-0.5::GLfloat) (-0.5::GLfloat)
+    preservingMatrix $ do
+        scale (0.7::GLfloat) (0.7::GLfloat) (0.7::GLfloat)
+        drawLabeledAxes
     flush
     glSwapBuffers
+    printErrors
 
 
 
