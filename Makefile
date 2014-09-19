@@ -24,7 +24,8 @@ SOURCES=src/Main.hs \
         src/Lorenz/Logic.hs \
         src/Lorenz/Data.hs \
         src/Graphics/Rendering/OpenGL/Help.hs \
-        src/Graphics/Rendering/OpenGL/Draw.hs
+        src/Graphics/Rendering/OpenGL/Draw.hs \
+        src/Data/Number/FloatToFloat.hs
 
 ################################################################################
 

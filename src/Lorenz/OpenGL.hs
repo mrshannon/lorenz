@@ -42,7 +42,7 @@ initilizeGL nextAction app = do
 
 -- | Redraw the scene.
 draw :: App -> IO ()
-draw (App {appView = view}) = do
+draw (App {appView = view, appData = d}) = do
 
     -- Clear buffers and matrix.
     clear [ColorBuffer, DepthBuffer]
@@ -64,6 +64,9 @@ draw (App {appView = view}) = do
         scale (0.7::GLfloat) (0.7::GLfloat) (0.7::GLfloat)
         drawLabeledAxes
 
+    -- Draw Lorenz.
+    drawFunction d
+
     -- Flush and swap buffers.
     flush
     glSwapBuffers
@@ -71,6 +74,13 @@ draw (App {appView = view}) = do
     -- Print any OpenGL errors.
     printErrors
 
+
+
+
+-- | Plot the app function.
+drawFunction :: Maybe AppData -> IO ()
+drawFunction Nothing = return ()
+drawFunction (Just (AppData _ vs)) = renderPrimitive LineStrip $ mapM_ vertex vs
 
 
 

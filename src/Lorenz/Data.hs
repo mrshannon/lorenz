@@ -23,6 +23,8 @@ module Lorenz.Data
 , AppMouse(..)
 , AppKeyboard(..)
 , KeyState(..)
+, AppFunction(..)
+, AppData(..)
 ) where
 
 import Data.Word
@@ -37,6 +39,8 @@ data App = App
     , appView       :: AppView
     , appMouse      :: AppMouse
     , appKeyboard   :: AppKeyboard
+    , appFunction   :: AppFunction
+    , appData       :: Maybe AppData
     } deriving(Show)
 
 
@@ -83,7 +87,19 @@ data AppKeyboard = AppKeyboard deriving(Show)
 data KeyState = Up | Down deriving(Show)
 
 
+data AppFunction = AppFunction
+    { initX     :: Double
+    , initY     :: Double
+    , initZ     :: Double
+    , funS      :: Double
+    , funR      :: Double
+    , funB      :: Double
+    , funDT     :: Double
+    , funTFinal :: Double
+    } deriving(Show)
 
 
-
-
+data AppData = AppData
+    { dataTime  :: [GLfloat]
+    , dataVerts :: [Vertex3f]
+    } deriving(Show)

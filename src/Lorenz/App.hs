@@ -28,7 +28,6 @@ import Graphics.Rendering.OpenGL.GL.Tensor(Vertex3(..))
 
 
 
-
 -- | Take the application Settings and construct an App object.
 initilizeApp :: App
 initilizeApp = App
@@ -57,4 +56,15 @@ initilizeApp = App
         , mouseRight    = Up
         }
     , appKeyboard = AppKeyboard
+    , appFunction = AppFunction
+        { initX     = 1.0
+        , initY     = 1.0
+        , initZ     = 1.0
+        , funS      = 10.0
+        , funR      = 28.0
+        , funB      = 2.7777
+        , funDT     = 0.001
+        , funTFinal = 50.0
+        }
+    , appData = Nothing
     }

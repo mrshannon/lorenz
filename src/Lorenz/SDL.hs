@@ -18,12 +18,12 @@ module Lorenz.SDL
 ) where
 
 import Lorenz.Data
+import Lorenz.Logic
 import Lorenz.OpenGL(reshape)
 import Control.Monad
 import Graphics.UI.SDL
 import Data.Version(showVersion)
 import Paths_lorenz(version)
-
 
 
 
@@ -63,8 +63,10 @@ initilizeSDL nextAction app@(App { appWindow = appWin}) =
         -- _ <- setVideoMode screenWidth screenHeight screenBpp [OpenGL, Resizable]
         setCaption ("Lorenz (v" ++ showVersion version ++ ")") "Lorenz"
 
+        let (t, v) = solveLorenz (appFunction app)
+
         -- Run the next action.
-        nextAction app
+        nextAction (app { appData = Just (AppData t v) })
 
     where
         AppWindow screenWidth screenHeight = appWin
