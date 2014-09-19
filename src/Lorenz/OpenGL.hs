@@ -42,7 +42,7 @@ initilizeGL nextAction app = do
 
 -- | Redraw the scene.
 draw :: App -> IO ()
-draw (App {appView = view, appData = d}) = do
+draw (App {appView = view, appData = d, appFunction = f}) = do
 
     -- Clear buffers and matrix.
     clear [ColorBuffer, DepthBuffer]
@@ -65,7 +65,15 @@ draw (App {appView = view, appData = d}) = do
         drawLabeledAxes
 
     -- Draw Lorenz.
-    drawFunction d
+    preservingMatrix $ do
+        scale (0.02::GLfloat) (0.02::GLfloat) (0.02::GLfloat)
+        color yellow
+        drawFunction d
+
+    -- Draw status bar.
+    color white
+    windowPos (Vertex2 5 5 :: Vertex2 GLint)
+    drawDisplay f
 
     -- Flush and swap buffers.
     flush
@@ -73,6 +81,22 @@ draw (App {appView = view, appData = d}) = do
 
     -- Print any OpenGL errors.
     printErrors
+
+
+
+
+-- | Display status bar.
+drawDisplay :: AppFunction -> IO ()
+drawDisplay (AppFunction x0 y0 z0 s r b dt tn) = do
+    glutPrint $ "x0 = " ++ (show x0)
+        ++ ", y0 = " ++ (show y0)
+        ++ ", z0 = " ++ (show z0)
+        ++ ", s = " ++ (show s)
+        ++ ", r = " ++ (show r)
+        ++ ", b = " ++ (show b)
+        ++ ", dt = " ++ (show dt)
+        ++ ", tn = " ++ (show tn)
+
 
 
 
